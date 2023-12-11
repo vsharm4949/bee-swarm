@@ -43,6 +43,15 @@ void Bee::communicate(Role new_role, Coordinate new_food) {
     }
 }
 
+void Bee::scout(double x_move, double y_move) {
+    Coordinate new_pos { position.x + buzz * x_move, position.y + buzz * y_move };
+    double new_quality = quality(new_pos);
+    if (new_quality > quality(position)) {
+        food = new_pos;
+        position = new_pos;
+    }
+}
+
 void BeeColony::move(Coordinate& from, const Coordinate to, double step) {
     if (from.y > to.y) from.y -= step;
     if (from.y < to.y) from.y += step;
@@ -67,15 +76,13 @@ void Bee::go_home() {
 
 void Hive::waggle_dance() {
     for (auto &bee : bees) {
-        switch (bee.get_role()) {
-            case Role::Worker:
-                bee.work(normal_dist(engine), normal_dist(engine));
-                break;
-            case Role::Scout:
-                bee.scout(normal_dist(engine), normal_dist(engine));
-                break;
-        }
+        const size_t choice = uniform_dist(engine);
+        const auto new_role = bees[choice].get_role();
+        const auto new_food = bees[choice].get_food();
+        bees[choice].communicate(bee.get_role(), bee.get_food());
+        bee.communicate(new_role, new_food);
     }
+    step = 0;
 }
 
 void Hive::explore() {

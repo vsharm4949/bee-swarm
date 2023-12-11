@@ -10,7 +10,7 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(bee-swarm src/main.cpp)
+add_executable(bee-swarm src/main.cpp src/bee.cpp)
 target_link_libraries(bee-swarm PRIVATE sfml-graphics)
 target_compile_features(bee-swarm PRIVATE cxx_std_17)
 

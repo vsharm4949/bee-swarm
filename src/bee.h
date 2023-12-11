@@ -79,7 +79,7 @@ namespace BeeColony {
         Hive(
             int number_workers,
             int number_inactive,
-            int number_scount,
+            int number_scout,
             Coordinate start_pos,
             Coordinate food,
             float buzz,
